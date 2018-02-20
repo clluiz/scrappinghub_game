@@ -6,6 +6,17 @@ import getRandomColor from '../../colors';
 const MAX_LIFE_TIME = 10;
 const MIN_LIFE_TIME = 5;
 
+const timerStyle = {
+    height: '20px',
+    width: '20px',
+    backgroundColor: '#FFFF00',
+    position: 'relative',
+    left: '60px',
+    top: '-10px',
+    borderRadius: '50%',
+    padding: '5px'
+}
+
 class Bomb extends Component {
     constructor(props) {
         super(props);
@@ -17,12 +28,31 @@ class Bomb extends Component {
         };
     }
 
+    componentDidMount() {
+        this.timerID = setInterval(
+            () => this.tick(),
+            1000
+        );
+    }
+
+    tick() {
+        this.setState({ duration: this.state.duration - 1});
+    }
+
     render() {
-        return (
-            <div draggable="true" className="Bomb" style={this.state.style}>  
-                {this.state.duration}  
-            </div>
-        )
+
+        if(this.state.duration > 0) {
+            return (
+                <div draggable="true" className="Bomb" style={this.state.style}>   
+                    <div style={timerStyle}>
+                        {this.state.duration}
+                    </div>
+                </div>
+            )
+        } else {
+            return null;
+        }
+
     }
 }
 
