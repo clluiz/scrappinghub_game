@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './App.css';
 import Bomb from './components/Bomb/Bomb';
 import Bin from './components/Bin/Bin';
-import generateRandomColor from './colors';
 import getRandomColor from './colors';
 
 class App extends Component {
