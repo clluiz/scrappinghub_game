@@ -8,13 +8,18 @@ class Bin extends Component {
 
     handleDrop(event) {
         event.preventDefault();
-        console.log('errou');
+        this.props.onDrop(event, this.props);
+    }
+
+    allowDrop(event) {
+        event.preventDefault();
     }
 
     render() {
         return (
-            <div onDrop={this.handleDrop}
-                style={{backgroundColor: this.props.color, width: this.props.size, height: this.props.size}}>            
+            <div onDrop={this.handleDrop} 
+                 onDragOver={this.allowDrop}
+                 style={{backgroundColor: this.props.color, width: this.props.size, height: this.props.size}}> 
             </div>
         )
     }

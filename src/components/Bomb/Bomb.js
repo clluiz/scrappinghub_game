@@ -26,6 +26,7 @@ class Bomb extends Component {
                 backgroundColor: getRandomColor()
             }
         };
+        this.onClick = this.onClick.bind(this);
     }
 
     componentDidMount() {
@@ -35,15 +36,19 @@ class Bomb extends Component {
         );
     }
 
+    onClick() {
+        this.props.onClick();
+    }
+
     tick() {
-        this.setState({ duration: this.state.duration - 1});
+        //this.setState({ duration: this.state.duration - 1});
     }
 
     render() {
 
         if(this.state.duration > 0) {
             return (
-                <div draggable="true" className="Bomb" style={this.state.style}>   
+                <div draggable="true" className="Bomb" style={this.state.style} onClick={this.onClick}>   
                     <div style={timerStyle}>
                         {this.state.duration}
                     </div>
