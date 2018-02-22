@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import '../../colors';
 import './Bomb.css';
-import getRandomColor from '../../colors';
+import generateRandomNumberBetween from '../../util';
 
 const MAX_LIFE_TIME = 10;
 const MIN_LIFE_TIME = 5;
@@ -22,11 +21,7 @@ class Bomb extends Component {
         super(props);
         this.state = {
             duration: Math.floor(Math.random() * (MAX_LIFE_TIME - MIN_LIFE_TIME + 1)) + MIN_LIFE_TIME,
-            style: {
-                backgroundColor: getRandomColor()
-            }
         };
-        this.onClick = this.onClick.bind(this);
     }
 
     componentDidMount() {
@@ -34,10 +29,6 @@ class Bomb extends Component {
             () => this.tick(),
             1000
         );
-    }
-
-    onClick() {
-        this.props.onClick();
     }
 
     tick() {
@@ -48,7 +39,8 @@ class Bomb extends Component {
 
         if(this.state.duration > 0) {
             return (
-                <div draggable="true" className="Bomb" style={this.state.style} onClick={this.onClick}>   
+                <div draggable="true" className="Bomb" 
+                    style={{backgroundColor: this.props.color, left: generateRandomNumberBetween(80, 520) + 40, top: generateRandomNumberBetween(80, 520) + 40 }}>   
                     <div style={timerStyle}>
                         {this.state.duration}
                     </div>
