@@ -22,6 +22,8 @@ class Bomb extends Component {
         this.state = {
             duration: generateRandomNumberBetween(MIN_LIFE_TIME, MAX_LIFE_TIME),
         };
+        this.handleDragStart = this.handleDragStart.bind(this);
+        this.handleDragEnd = this.handleDragEnd.bind(this);
     }
 
     componentDidMount() {
@@ -32,7 +34,15 @@ class Bomb extends Component {
     }
 
     tick() {
-        this.setState({ duration: this.state.duration - 1});
+        //this.setState({ duration: this.state.duration - 1});
+    }
+
+    handleDragStart(event) {
+        this.props.onDragStart(event, this.props.id);
+    }
+
+    handleDragEnd(event) {
+        this.props.onDragEnd();
     }
 
     render() {
@@ -40,7 +50,8 @@ class Bomb extends Component {
         if(this.state.duration > 0) {
             return (
                 <div draggable="true" className="Bomb" 
-                    style={{backgroundColor: this.props.color, left: this.props.left, top: this.props.top }}>   
+                     style={{backgroundColor: this.props.color, left: this.props.left, top: this.props.top }}
+                     onDragStart={this.handleDragStart}>   
                     <div style={timerStyle}>
                         {this.state.duration}
                     </div>
