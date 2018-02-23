@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import Bomb from './components/Bomb/Bomb';
 import Bin from './components/Bin/Bin';
-import getRandomColor from './colors';
+import Score from './components/Score/Score';
+import Counter from './components/Counter/Counter';
+import * as colors from './colors';
 import generateRandomNumberBetween from './util';
 import './constants';
 
@@ -11,15 +13,16 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bombs: [{key: 1, color: getRandomColor(), left: generateRandomNumberBetween(80,520), top: generateRandomNumberBetween(80, 520) },
-        {key: 2, color: getRandomColor(), left: generateRandomNumberBetween(80,520), top: generateRandomNumberBetween(80, 520) },
-        {key: 3, color: getRandomColor(), left: generateRandomNumberBetween(80,520), top: generateRandomNumberBetween(80, 520) }],
+      bombs: [{key: 1, color: colors.getRandomColor(), left: generateRandomNumberBetween(80,520), top: generateRandomNumberBetween(80, 520) },
+        {key: 2, color: colors.getRandomColor(), left: generateRandomNumberBetween(80,520), top: generateRandomNumberBetween(80, 520) },
+        {key: 3, color: colors.getRandomColor(), left: generateRandomNumberBetween(80,520), top: generateRandomNumberBetween(80, 520) }],
       bins: [
-        {key: 1, color: getRandomColor(), size: '100px' },
-        {key: 2, color: getRandomColor(), size: '100px' },
-        {key: 3, color: getRandomColor(), size: '100px' }
+        {key: 1, color: colors.RED, size: '100px' },
+        {key: 2, color: colors.GREEN, size: '100px' },
+        {key: 3, color: colors.BLUE, size: '100px' }
       ],
-      score: 0
+      score: 0,
+      timeleft: 40
     }
     this.handleDragStartBomb = this.handleDragStartBomb.bind(this);
     this.handleDropBomb = this.handleDropBomb.bind(this);
@@ -39,13 +42,33 @@ class App extends Component {
     let bomb = bombs.filter((b) => b.key === this.state.selectedBomb)[0];
     if(bomb && bomb.color === bin.color) {
       bombs = bombs.filter(b => b.key !== this.state.selectedBomb);
-      this.setState({bombs: bombs});
+      this.setState(prevState => {
+        return { score: prevState.score + 1, bombs: bombs }
+      });
+    } else {
+      this.setState(prevState => {
+        return { score: prevState.score - 1 }
+      });      
     }
+  }
+
+  componentDidMount() {
+    this.timerID = setInterval(
+      () => this.tickCounter(),
+      1000
+    );
+  }
+
+  tickCounter() {
+    this.setState(prevState => {
+      return { timeleft: prevState.timeleft - 1};
+    })
   }
 
   render() {
     return (
       <div className="App">
+        <Score value={this.state.score}/>
         <div className="Board">
           {
               this.state.bombs.map((item) => (
@@ -53,13 +76,14 @@ class App extends Component {
               ))
           }
         </div>
-        <div>
+        <div className="Bins">
           {
               this.state.bins.map((bin) => (
                 <Bin id={bin.key} key={bin.key} color={bin.color} size={bin.size} onDrop={this.handleDropBomb}/>
               ))
           }
         </div>
+        <Counter timeleft={this.state.timeleft}/>
       </div>
     );
   }

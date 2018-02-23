@@ -34,7 +34,7 @@ class Bomb extends Component {
     }
 
     tick() {
-        //this.setState({ duration: this.state.duration - 1});
+        this.setState({ duration: this.state.duration - 1});
     }
 
     handleDragStart(event) {
