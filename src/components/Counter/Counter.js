@@ -28,6 +28,7 @@ export default class Counter extends Component {
         }, () => {
             if(this.state.timeleft < 0) {
                 this.setState({ timeleft: this.props.interval });
+                this.props.onTimeout();
             }
         });
     }

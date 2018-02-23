@@ -9,7 +9,6 @@ import generateRandomNumberBetween from './util';
 import './constants';
 
 class App extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -26,6 +25,7 @@ class App extends Component {
     }
     this.handleDragStartBomb = this.handleDragStartBomb.bind(this);
     this.handleDropBomb = this.handleDropBomb.bind(this);
+    this.swapBinColors = this.swapBinColors.bind(this);
   }
 
   handleDragStartBomb(event, key) {
@@ -52,6 +52,15 @@ class App extends Component {
     }
   }
 
+  swapBinColors() {
+    let colors = this.state.bins.map(b => b.color);
+    this.setState(prevState => {
+      return {
+        bins: prevState.bins.map((b,i) => ({ ...b, color: i == colors.length - 1 ? colors[0] : colors[i +1] }) )
+      }
+    });
+  }
+
   render() {
     return (
       <div className="App">
@@ -70,7 +79,7 @@ class App extends Component {
               ))
           }
         </div>
-        <Counter interval="40"/>
+        <Counter interval="2" onTimeout={this.swapBinColors}/>
       </div>
     );
   }
