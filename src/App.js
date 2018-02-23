@@ -52,19 +52,6 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
-    this.timerID = setInterval(
-      () => this.tickCounter(),
-      1000
-    );
-  }
-
-  tickCounter() {
-    this.setState(prevState => {
-      return { timeleft: prevState.timeleft - 1};
-    })
-  }
-
   render() {
     return (
       <div className="App">
@@ -83,7 +70,7 @@ class App extends Component {
               ))
           }
         </div>
-        <Counter timeleft={this.state.timeleft}/>
+        <Counter interval="40"/>
       </div>
     );
   }
