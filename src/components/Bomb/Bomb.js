@@ -10,7 +10,7 @@ const timerStyle = {
     width: '20px',
     backgroundColor: '#FFFF00',
     position: 'relative',
-    left: '50px',
+    left: '30px',
     top: '-5px',
     borderRadius: '50%',
     padding: '5px'

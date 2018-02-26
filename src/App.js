@@ -6,19 +6,19 @@ import Score from './components/Score/Score';
 import Counter from './components/Counter/Counter';
 import * as colors from './colors';
 import generateRandomNumberBetween from './util';
-import './constants';
+import { BOMB_SIZE, BOARD_HEIGHT, BOARD_WIDTH } from './constants';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bombs: [{ key: 1, color: colors.getRandomColor(), left: generateRandomNumberBetween(80, 520), top: generateRandomNumberBetween(80, 520) },
-      { key: 2, color: colors.getRandomColor(), left: generateRandomNumberBetween(80, 520), top: generateRandomNumberBetween(80, 520) },
-      { key: 3, color: colors.getRandomColor(), left: generateRandomNumberBetween(80, 520), top: generateRandomNumberBetween(80, 520) }],
+      bombs: [{ key: 1, color: colors.getRandomColor(), left: generateRandomNumberBetween(BOMB_SIZE, BOARD_WIDTH - BOMB_SIZE), top: generateRandomNumberBetween(BOMB_SIZE, BOARD_HEIGHT - BOMB_SIZE) },
+      { key: 2, color: colors.getRandomColor(), left: generateRandomNumberBetween(BOMB_SIZE, BOARD_WIDTH - BOMB_SIZE), top: generateRandomNumberBetween(BOMB_SIZE, BOARD_HEIGHT - BOMB_SIZE) },
+      { key: 3, color: colors.getRandomColor(), left: generateRandomNumberBetween(BOMB_SIZE, BOARD_WIDTH - BOMB_SIZE), top: generateRandomNumberBetween(BOMB_SIZE, BOARD_HEIGHT - BOMB_SIZE) }],
       bins: [
-        { key: 1, color: colors.RED, size: '100px' },
-        { key: 2, color: colors.GREEN, size: '100px' },
-        { key: 3, color: colors.BLUE, size: '100px' }
+        { key: 1, color: colors.RED, size: 100 },
+        { key: 2, color: colors.GREEN, size: 100 },
+        { key: 3, color: colors.BLUE, size: 100 }
       ],
       score: 0,
       timeleft: 40
@@ -43,7 +43,17 @@ class App extends Component {
     if (bomb && bomb.color === bin.color) {
       bombs = bombs.filter(b => b.key !== this.state.selectedBomb);
       this.setState(prevState => {
-        return { score: prevState.score + 1, bombs: bombs }
+        prevState.bins.forEach((b,i) => {
+          if(b.key === bin.id) {
+            b.color = colors.getRandomColor(),
+            b.size = prevState.bins[i].size + 10
+          }
+        })        
+        return { 
+          score: prevState.score + 1, 
+          bombs: bombs,
+          bins: prevState.bins
+          } 
       });
     } else {
       this.setState(prevState => {
@@ -98,7 +108,7 @@ class App extends Component {
             ))
           }
         </div>
-        <Counter interval="2" onTimeout={this.swapBinColors} />
+        <Counter interval="10" onTimeout={this.swapBinColors} />
       </div>
     );
   }
