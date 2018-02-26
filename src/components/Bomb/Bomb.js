@@ -33,8 +33,17 @@ class Bomb extends Component {
         );
     }
 
+    componentWillUnmount() {
+        clearTimeout(this.timerID);
+    }
+
     tick() {
-        this.setState({ duration: this.state.duration - 1});
+        this.setState({ duration: this.state.duration - 1 },
+            () => {
+                if (this.state.duration === 0) {
+                    this.props.onDestroy(this.props);
+                }
+            });
     }
 
     handleDragStart(event) {
@@ -46,21 +55,16 @@ class Bomb extends Component {
     }
 
     render() {
-
-        if(this.state.duration > 0) {
-            return (
-                <div draggable="true" className="Bomb" 
-                     style={{backgroundColor: this.props.color, left: this.props.left, top: this.props.top }}
-                     onDragStart={this.handleDragStart}>   
-                    <div style={timerStyle}>
-                        {this.state.duration}
-                    </div>
+        return (
+            <div draggable="true"
+                className="Bomb"
+                style={{ backgroundColor: this.props.color, left: this.props.left, top: this.props.top }}
+                onDragStart={this.handleDragStart}>
+                <div style={timerStyle}>
+                    {this.state.duration}
                 </div>
-            )
-        } else {
-            return null;
-        }
-
+            </div>
+        )
     }
 }
 
