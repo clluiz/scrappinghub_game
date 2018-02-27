@@ -1,27 +1,26 @@
 import React, { Component } from 'react';
-import './App.css';
 import Bomb from './components/Bomb/Bomb';
 import Bin from './components/Bin/Bin';
 import Score from './components/Score/Score';
 import Counter from './components/Counter/Counter';
-import * as colors from './colors';
-import generateRandomNumberBetween from './util';
 import { BOMB_SIZE, BOARD_HEIGHT, BOARD_WIDTH } from './constants';
+import generateRandomNumberBetween from './util';
+import * as colors from './colors';
+import './App.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bombs: [{ key: 1, color: colors.getRandomColor(), left: generateRandomNumberBetween(BOMB_SIZE, BOARD_WIDTH - BOMB_SIZE), top: generateRandomNumberBetween(BOMB_SIZE, BOARD_HEIGHT - BOMB_SIZE) },
-      { key: 2, color: colors.getRandomColor(), left: generateRandomNumberBetween(BOMB_SIZE, BOARD_WIDTH - BOMB_SIZE), top: generateRandomNumberBetween(BOMB_SIZE, BOARD_HEIGHT - BOMB_SIZE) },
-      { key: 3, color: colors.getRandomColor(), left: generateRandomNumberBetween(BOMB_SIZE, BOARD_WIDTH - BOMB_SIZE), top: generateRandomNumberBetween(BOMB_SIZE, BOARD_HEIGHT - BOMB_SIZE) }],
+      bombs: [],
       bins: [
         { key: 1, color: colors.RED, size: 100 },
         { key: 2, color: colors.GREEN, size: 100 },
         { key: 3, color: colors.BLUE, size: 100 }
       ],
       score: 0,
-      timeleft: 40
+      timeleft: 40,
+      bombCreationInterval: 1000
     }
     this.handleDragStartBomb = this.handleDragStartBomb.bind(this);
     this.handleDropBomb = this.handleDropBomb.bind(this);
@@ -45,8 +44,7 @@ class App extends Component {
       this.setState(prevState => {
         prevState.bins.forEach((b,i) => {
           if(b.key === bin.id) {
-            b.color = colors.getRandomColor(),
-            b.size = prevState.bins[i].size + 10
+            b.size = prevState.bins[i].size + 1;
           }
         })        
         return { 
@@ -54,7 +52,7 @@ class App extends Component {
           bombs: bombs,
           bins: prevState.bins
           } 
-      });
+      }, this.swapBinColors());
     } else {
       this.setState(prevState => {
         return { score: prevState.score - 1 }
@@ -79,6 +77,34 @@ class App extends Component {
         bins: prevState.bins.map((b, i) => ({ ...b, color: i === colors.length - 1 ? colors[0] : colors[i + 1] }))
       }
     });
+  }
+
+  componentDidMount() {
+    this.timer = setInterval(
+      () => this.createBomb(),
+      1000
+    );
+
+    setTimeout(() => {
+      alert(`GAME OVER! Your score is ${this.state.score}`);
+    },120000)
+  }  
+
+  createInterval(interval, action) {
+    return setInterval(() => action(), interval);
+  }
+
+  createBomb() {
+    this.setState(prevState => {
+      return {
+        bombs: prevState.bombs.concat([{
+          key: new Date().getTime(), 
+          color: colors.getRandomColor(), 
+          left: generateRandomNumberBetween(BOMB_SIZE, BOARD_WIDTH - BOMB_SIZE), 
+          top: generateRandomNumberBetween(BOMB_SIZE, BOARD_HEIGHT - BOMB_SIZE)
+        }])
+      }
+    })
   }
 
   render() {
@@ -108,7 +134,7 @@ class App extends Component {
             ))
           }
         </div>
-        <Counter interval="10" onTimeout={this.swapBinColors} />
+        <Counter interval="40" onTimeout={this.swapBinColors} />
       </div>
     );
   }
