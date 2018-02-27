@@ -85,9 +85,9 @@ class App extends Component {
       1000
     );
 
-    setTimeout(() => {
-      alert(`GAME OVER! Your score is ${this.state.score}`);
-    },120000)
+    this.gameTime = setTimeout(() => {
+      //this.finishGame();
+    },120000);
   }  
 
   createInterval(interval, action) {
@@ -105,6 +105,11 @@ class App extends Component {
         }])
       }
     })
+  }
+
+  finishGame() {
+    alert(`GAME OVER! Your score is ${this.state.score}`);
+    clearInterval(this.gameTime);
   }
 
   render() {

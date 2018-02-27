@@ -4,7 +4,7 @@ export default class Score extends Component {
 
     render() {
         return (
-            <p>
+            <p style={{textAlign: 'left'}}>
                 Score: {this.props.value}
             </p>
         )
