@@ -20,7 +20,7 @@ class App extends Component {
       ],
       score: 0,
       timeleft: 40,
-      bombCreationInterval: 1000
+      bombCreationInterval: 5000
     }
     this.handleDragStartBomb = this.handleDragStartBomb.bind(this);
     this.handleDropBomb = this.handleDropBomb.bind(this);
@@ -80,25 +80,33 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.timer = setInterval(
-      () => this.createBomb(),
-      1000
-    );
+    this.createBomb();
+    this.createInterval();
 
     this.gameTime = setTimeout(() => {
-      //this.finishGame();
+      this.finishGame();
+      clearInterval(this.gameTime);
     },120000);
+
+    this.timerTimer = setInterval(
+      () => this.setState((prevState) => {
+        return {bombCreationInterval: prevState.bombCreationInterval - 450}
+      }, () => this.createInterval()), 10000
+    )
   }  
 
-  createInterval(interval, action) {
-    return setInterval(() => action(), interval);
+  createInterval() {
+    this.timer = setInterval(
+      () => this.createBomb(),
+      this.state.bombCreationInterval
+    );
   }
 
   createBomb() {
     this.setState(prevState => {
       return {
         bombs: prevState.bombs.concat([{
-          key: new Date().getTime(), 
+          key: `${new Date().getTime() + Math.floor(Math.random() * 10)}`, 
           color: colors.getRandomColor(), 
           left: generateRandomNumberBetween(BOMB_SIZE, BOARD_WIDTH - BOMB_SIZE), 
           top: generateRandomNumberBetween(BOMB_SIZE, BOARD_HEIGHT - BOMB_SIZE)
@@ -110,6 +118,8 @@ class App extends Component {
   finishGame() {
     alert(`GAME OVER! Your score is ${this.state.score}`);
     clearInterval(this.gameTime);
+    clearInterval(this.timer);
+    clearInterval(this.timerTimer);
   }
 
   render() {
