@@ -29,6 +29,8 @@ class App extends Component {
   }
 
   handleDragStartBomb(event, key) {
+    // hack to make drag and drop work in firefox
+    event.dataTransfer.setData('Text', key);
     this.setState({ selectedBomb: key });
   }
 
