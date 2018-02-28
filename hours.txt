@@ -1,0 +1,14 @@
+I've start to work on these project on february, 20.
+
+Since then, I tried to work around two hours a day. I couldn't work on it on february 25 and 26.
+
+I've chosen to use React to develop the project because I think it is a great technology and wanted to test my knowledge in it.
+
+I prefered to not use Redux or other libraries or framework because I was training to think the "react way."
+
+It was very interesting to model a little game using the principles of React, 
+the most difficult was to make the drag and drop works the I think it should be on react withou frameworks.
+
+I expect you to enjoy reviewining my code the same I enjoy to code this project.
+
+Thanks for the oportunity!

@@ -1,5 +1,7 @@
 {
   "name": "scrappinghub_game",
+  "author": "Cleiton Luiz Rocha Teodor",
+  "description": "Test for joinning the Scrappinghub team!",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -7,6 +9,10 @@
     "react-dom": "^16.2.0",
     "react-scripts": "1.1.1"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/clluiz/scrappinghub_game"
+  },  
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

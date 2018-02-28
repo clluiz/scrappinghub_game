@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import Bomb from './components/Bomb/Bomb';
 import Bin from './components/Bin/Bin';
 import Score from './components/Score/Score';
 import Counter from './components/Counter/Counter';
-import { BOMB_SIZE, BOARD_HEIGHT, BOARD_WIDTH } from './constants';
+import { BOMB_SIZE, BOARD_HEIGHT, BOARD_WIDTH, TOTAL_GAME_TIME_MS } from './constants';
 import generateRandomNumberBetween from './util';
 import * as colors from './colors';
 import './App.css';
@@ -88,7 +89,7 @@ class App extends Component {
     this.gameTime = setTimeout(() => {
       this.finishGame();
       clearInterval(this.gameTime);
-    },120000);
+    },TOTAL_GAME_TIME_MS);
 
     this.timerTimer = setInterval(
       () => this.setState((prevState) => {
